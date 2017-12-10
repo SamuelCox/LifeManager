@@ -14,12 +14,12 @@ namespace LifeManager.Rest.Controllers
     public class AuthController : Controller
     {
         private IConfiguration _config;
-        private UserManager<User> _userManager;
+        private UserManager<User> _userManager;        
 
         public AuthController(IConfiguration config, UserManager<User> userManager)
         {
             _config = config;
-            _userManager = userManager;
+            _userManager = userManager;            
         }
 
         [HttpPost]        

@@ -31,8 +31,7 @@ namespace LifeManager.Rest
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<AuthContext>();            
+        {                       
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {                    
@@ -46,9 +45,9 @@ namespace LifeManager.Rest
                         ValidAudience = Configuration["Jwt:Isser"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))                        
                     };
-                });
+                });            
             var userStore = new UserStore<User>(new AuthContext(), null);
-            var userManager = new UserManager<User>(userStore, null, new PasswordHasher<User>(), null, null, null, null, null, null );
+            var userManager = new UserManager<User>(userStore, null, new PasswordHasher<User>(), null, null, null, null, null, null);
             services.AddTransient<UserManager<User>>(x => userManager);
             
             services.AddMvc(options =>
