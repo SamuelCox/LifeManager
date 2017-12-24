@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LifeManager.Data.Contexts;
 using LifeManager.Data.Entities;
+using LifeManager.Rest.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -53,7 +54,7 @@ namespace LifeManager.Rest
             optionsBuilder.UseSqlServer(Configuration["Connection"]);
             var db = new AuthContext(optionsBuilder.Options);
             var userStore = new UserStore<User>(db, null);
-            var userManager = new UserManager<User>(userStore, null, new PasswordHasher<User>(), null, null, null, null, null, null);
+            var userManager = new UserManagerWrapper(userStore, null, new PasswordHasher<User>(), null, null, null, null, null, null);
             services.AddSingleton<UserManager<User>>(x => userManager);
 
             db.Database.EnsureCreated();

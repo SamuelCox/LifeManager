@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LifeManager.Data.Entities;
 using LifeManager.Rest.Models;
+using LifeManager.Rest.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,10 @@ namespace LifeManager.Rest.Controllers
     public class AuthController : Controller
     {
         private readonly IConfiguration _config;
-        private readonly UserManager<User> _userManager;        
+        private readonly IUserManagerWrapper _userManager;        
 
 
-        public AuthController(IConfiguration config, UserManager<User> userManager)
+        public AuthController(IConfiguration config, IUserManagerWrapper userManager)
         {
             _config = config;
             _userManager = userManager;            
@@ -29,21 +30,28 @@ namespace LifeManager.Rest.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("/auth/register")]        
+        [Route("api/auth/register")]        
         public async Task<IActionResult> Register([FromBody] UserModel userModel)
         {
             if (string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Password))
             {
                 return BadRequest();
             }
-            var user = new User
+            
+            User user;
+            user = await _userManager.FindByNameAsync(userModel.UserName);
+            if (user != null)
+            {
+                return BadRequest();
+            }
+            user  = new User
             {
                 UserName = userModel.UserName
             };
-            var userCreation = await _userManager.CreateAsync(user, userModel.Password);
-            var jwtToken = GenerateJwtToken(user);
+            var userCreation = await _userManager.CreateAsync(user, userModel.Password);            
             if (userCreation.Succeeded)
             {
+                var jwtToken = GenerateJwtToken(user);
                 return Ok(new { token = jwtToken });
             }
             return BadRequest();
@@ -51,16 +59,23 @@ namespace LifeManager.Rest.Controllers
 
         [AllowAnonymous]
         [HttpPost] 
-        [Route("Authenticate")]
+        [Route("api/auth/authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] UserModel userModel)
         {
-            var user = await _userManager.FindByNameAsync(userModel.UserName);
-            var correctPassword = await _userManager.CheckPasswordAsync(user, userModel.Password);
-            if (correctPassword)
+            if (!string.IsNullOrEmpty(userModel.UserName))
             {
-                var jwtToken = GenerateJwtToken(user);
-                return Ok(new { token = jwtToken});
+                var user = await _userManager.FindByNameAsync(userModel.UserName);
+                if (user != null)
+                {
+                    var correctPassword = await _userManager.CheckPasswordAsync(user, userModel.Password);
+                    if (correctPassword)
+                    {
+                        var jwtToken = GenerateJwtToken(user);
+                        return Ok(new {token = jwtToken});
+                    }
+                }
             }
+
             return BadRequest();
         }        
 
