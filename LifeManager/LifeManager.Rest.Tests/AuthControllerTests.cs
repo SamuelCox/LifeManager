@@ -197,8 +197,7 @@ namespace LifeManager.Rest.Tests
         public async Task Authenticate_ShouldReturnOkIfGoodCredentials()
         {
             //Data
-            var userModel = new UserModel { Password = "password", UserName = "user" };                        
-            var mockUser = new User{UserName = "user"};
+            var userModel = new UserModel { Password = "password", UserName = "user" };                                  
 
 
             //Setup                        

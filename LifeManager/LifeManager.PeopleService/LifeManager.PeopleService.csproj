@@ -9,4 +9,9 @@
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0008" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
