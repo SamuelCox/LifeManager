@@ -26,17 +26,20 @@ namespace LifeManager.CalendarService.Services
 
         public async Task UpdateEvent(CalendarEventModel model)
         {
-            throw new NotImplementedException();
+            var calendarEvent = Mapper.Map<CalendarEvent>(model);
+            await _repository.Update(calendarEvent);
         }
 
         public async Task DeleteEvent(CalendarEventModel model)
         {
-            throw new NotImplementedException();
+            var calendarEvent = Mapper.Map<CalendarEvent>(model);
+            await _repository.Delete(calendarEvent);
         }
 
         public async Task<IEnumerable<CalendarEvent>> GetEvent(CalendarEventModel model)
         {
-            throw new NotImplementedException();
+            return await _repository.Get(model.Id, model.Name, model.LocationName,
+                model.StartDate, model.EndDate);
         }
 
         public async Task<IEnumerable<CalendarEvent>> GetAllEvents()
