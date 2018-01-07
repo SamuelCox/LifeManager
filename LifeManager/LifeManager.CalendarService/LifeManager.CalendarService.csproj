@@ -8,13 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.0" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0012" />
     <PackageReference Include="NServiceBus.Autofac" Version="7.0.0-beta0004" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="5.0.0-beta0029" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LifeManager.Data\LifeManager.Data.csproj" />
     <ProjectReference Include="..\LifeManager.Messages\LifeManager.Messages.csproj" />
   </ItemGroup>
 
