@@ -7,6 +7,7 @@ using LifeManager.CalendarService.Models;
 using LifeManager.CalendarService.Services;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
+using LifeManager.Messages.Calendar;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using NServiceBus;
@@ -26,7 +27,13 @@ namespace LifeManager.CalendarService
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
             endpointConfiguration.LicensePath(config["NServiceBusLicense"]);
 
-            Mapper.Initialize(cfg => cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap());
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<PersonDTO, Person>().ReverseMap();
+                cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
+            });
+            
 
             var diBuilder = new ContainerBuilder();
             diBuilder.RegisterInstance(new MongoClient())

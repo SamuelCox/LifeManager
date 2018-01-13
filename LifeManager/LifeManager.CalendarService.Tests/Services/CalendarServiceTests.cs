@@ -7,10 +7,11 @@ using AutoMapper;
 using LifeManager.CalendarService.Models;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
+using LifeManager.Messages.Calendar;
 using Moq;
 using NUnit.Framework;
 
-namespace LifeManager.CalendarService.Tests
+namespace LifeManager.CalendarService.Tests.Services
 {
     [TestFixture]
     public class CalendarServiceTests
@@ -21,7 +22,11 @@ namespace LifeManager.CalendarService.Tests
         public void SetUp()
         {
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap());
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<PersonDTO, Person>().ReverseMap();
+            });
             _mockCalendarRepository = new Mock<ICalendarRepository>();
         }
 
@@ -29,7 +34,7 @@ namespace LifeManager.CalendarService.Tests
         public async Task CreateEvent_ShouldCallRepositoryAdd()
         {
             //Data
-            var calendarEventModel = new CalendarEventModel { Id = Guid.NewGuid() };
+            var calendarEventModel = new CalendarEventModel { Id = Guid.NewGuid()};
 
             //Setup
             _mockCalendarRepository.Setup(x => x.Add(It.IsAny<CalendarEvent>())).Returns(Task.CompletedTask).Verifiable();
@@ -97,6 +102,31 @@ namespace LifeManager.CalendarService.Tests
             //Analysis
             Assert.AreEqual(1, result.Count());
             Assert.AreEqual(calendarEventModel.Id, result.First().Id);
+            _mockCalendarRepository.Verify();
+        }
+
+        [Test]
+        public async Task GetAllEvents_ShouldReturnEvents()
+        {
+            //Data
+            
+            IEnumerable<CalendarEvent> calendarEvents = new[]
+            {
+                new CalendarEvent{ Id = Guid.NewGuid()},
+                new CalendarEvent{ Id = Guid.NewGuid()}
+            }.ToList();
+
+            //Setup
+            _mockCalendarRepository.Setup(x => x.GetAll())
+                .Returns(Task.FromResult(calendarEvents)).Verifiable();
+
+            //Test
+            var calendarService = new CalendarService.Services.CalendarService(_mockCalendarRepository.Object);
+            var result = await calendarService.GetAllEvents();
+
+            //Analysis
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(calendarEvents.First().Id, result.First().Id);
             _mockCalendarRepository.Verify();
         }
     }

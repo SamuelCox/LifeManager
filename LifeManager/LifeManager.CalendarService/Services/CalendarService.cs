@@ -44,7 +44,7 @@ namespace LifeManager.CalendarService.Services
 
         public async Task<IEnumerable<CalendarEvent>> GetAllEvents()
         {
-            throw new NotImplementedException();
+            return await _repository.GetAll();
         }
     }
 }

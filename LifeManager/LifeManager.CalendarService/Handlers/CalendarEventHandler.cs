@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using LifeManager.CalendarService.Models;
 using LifeManager.CalendarService.Services;
 using LifeManager.Messages;
 using LifeManager.Messages.Calendar;
@@ -22,9 +24,10 @@ namespace LifeManager.CalendarService.Handlers
             _calendarService = calendarService;
         }
 
-        public Task Handle(AddCalendarEventCommand message, IMessageHandlerContext context)
+        public async Task Handle(AddCalendarEventCommand message, IMessageHandlerContext context)
         {
-            throw new NotImplementedException();
+            var model = Mapper.Map<CalendarEventModel>(message);
+            await _calendarService.CreateEvent(model);
         }
 
         public Task Handle(UpdateCalendarEventCommand message, IMessageHandlerContext context)
