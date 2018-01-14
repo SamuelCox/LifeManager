@@ -30,10 +30,10 @@ namespace LifeManager.Data.Repositories
             await calendarEvents.UpdateOneAsync(filter, new ObjectUpdateDefinition<CalendarEvent>(calendarEvent));
         }
 
-        public async Task Delete(CalendarEvent calendarEvent)
+        public async Task Delete(Guid id)
         {
             var calendarEvents = _db.GetCollection<CalendarEvent>("CalendarEvents");
-            var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, calendarEvent.Id);
+            var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, id);
             await calendarEvents.DeleteOneAsync(filter);
         }
 

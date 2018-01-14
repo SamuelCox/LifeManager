@@ -30,14 +30,15 @@ namespace LifeManager.CalendarService.Handlers
             await _calendarService.CreateEvent(model);
         }
 
-        public Task Handle(UpdateCalendarEventCommand message, IMessageHandlerContext context)
+        public async Task Handle(UpdateCalendarEventCommand message, IMessageHandlerContext context)
         {
-            throw new NotImplementedException();
+            var model = Mapper.Map<CalendarEventModel>(message);
+            await _calendarService.UpdateEvent(model);
         }
 
-        public Task Handle(DeleteCalendarEventCommand message, IMessageHandlerContext context)
-        {
-            throw new NotImplementedException();
+        public async Task Handle(DeleteCalendarEventCommand message, IMessageHandlerContext context)
+        {            
+            await _calendarService.DeleteEvent(message.Id);
         }
 
         public Task Handle(GetCalendarEventCommand message, IMessageHandlerContext context)

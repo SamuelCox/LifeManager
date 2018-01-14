@@ -32,6 +32,7 @@ namespace LifeManager.CalendarService
                 cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap();
                 cfg.CreateMap<PersonDTO, Person>().ReverseMap();
                 cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
             });
             
 

@@ -22,7 +22,11 @@ namespace LifeManager.CalendarService.Tests.Handlers
         public void SetUp()
         {
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap());
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
+            });
             _mockMessageHandlerContext = new Mock<IMessageHandlerContext>();
             _mockCalendarService = new Mock<ICalendarService>();
         }
@@ -45,9 +49,38 @@ namespace LifeManager.CalendarService.Tests.Handlers
         }
 
         [Test]
+        public async Task HandleUpdate_ShouldCallUpdateOnService()
+        {
+            // Data
+            var updateCalendarEventCommand = new UpdateCalendarEventCommand();
+
+            // Setup
+            _mockCalendarService.Setup(x => x.UpdateEvent(It.IsAny<CalendarEventModel>())).Returns(Task.CompletedTask).Verifiable();
+
+            // Test
+            var handler = new CalendarEventHandler(_mockCalendarService.Object);
+            await handler.Handle(updateCalendarEventCommand, _mockMessageHandlerContext.Object);
+
+            // Analysis
+            _mockCalendarService.Verify();
+        }
+
+        [Test]
         public async Task HandleDelete_ShouldCallDeleteOnService()
         {
+            // Data
+            var deleteCalendarEventCommand = new DeleteCalendarEventCommand { Id = Guid.NewGuid() };
 
+            // Setup
+            _mockCalendarService.Setup(x => x.DeleteEvent(It.Is<Guid>(y => y == deleteCalendarEventCommand.Id)))
+                .Returns(Task.CompletedTask).Verifiable();
+
+            // Test
+            var handler = new CalendarEventHandler(_mockCalendarService.Object);
+            await handler.Handle(deleteCalendarEventCommand, _mockMessageHandlerContext.Object);
+
+            // Analysis
+            _mockCalendarService.Verify();
         }
     }
 }

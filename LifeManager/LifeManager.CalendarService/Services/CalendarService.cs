@@ -30,10 +30,9 @@ namespace LifeManager.CalendarService.Services
             await _repository.Update(calendarEvent);
         }
 
-        public async Task DeleteEvent(CalendarEventModel model)
-        {
-            var calendarEvent = Mapper.Map<CalendarEvent>(model);
-            await _repository.Delete(calendarEvent);
+        public async Task DeleteEvent(Guid id)
+        {            
+            await _repository.Delete(id);
         }
 
         public async Task<IEnumerable<CalendarEvent>> GetEvent(CalendarEventModel model)

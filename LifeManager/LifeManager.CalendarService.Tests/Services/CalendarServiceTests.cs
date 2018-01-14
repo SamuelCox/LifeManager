@@ -68,14 +68,14 @@ namespace LifeManager.CalendarService.Tests.Services
         public async Task DeleteEvent_ShouldCallRepositoryDelete()
         {
             //Data
-            var calendarEventModel = new CalendarEventModel { Id = Guid.NewGuid() };
+            var id = Guid.NewGuid();
 
             //Setup
-            _mockCalendarRepository.Setup(x => x.Delete(It.IsAny<CalendarEvent>())).Returns(Task.CompletedTask).Verifiable();
+            _mockCalendarRepository.Setup(x => x.Delete(It.Is<Guid>(y => y == id))).Returns(Task.CompletedTask).Verifiable();
 
             //Test
             var calendarService = new CalendarService.Services.CalendarService(_mockCalendarRepository.Object);
-            await calendarService.DeleteEvent(calendarEventModel);
+            await calendarService.DeleteEvent(id);
 
             //Analysis
             _mockCalendarRepository.Verify();
