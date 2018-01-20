@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using LifeManager.Messages.Calendar;
 
-namespace LifeManager.CalendarService.Models
+namespace LifeManager.Models
 {
     public class CalendarEventModel
     {
@@ -12,6 +11,6 @@ namespace LifeManager.CalendarService.Models
         public string LocationName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public IEnumerable<PersonDTO> People { get; set; }
+        public IEnumerable<PersonModel> People { get; set; }
     }
 }

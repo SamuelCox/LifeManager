@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using LifeManager.CalendarService.Models;
 using LifeManager.CalendarService.Services;
 using LifeManager.Messages;
 using LifeManager.Messages.Calendar;
@@ -25,15 +24,13 @@ namespace LifeManager.CalendarService.Handlers
         }
 
         public async Task Handle(AddCalendarEventCommand message, IMessageHandlerContext context)
-        {
-            var model = Mapper.Map<CalendarEventModel>(message);
-            await _calendarService.CreateEvent(model);
+        {            
+            await _calendarService.CreateEvent(message.Model);
         }
 
         public async Task Handle(UpdateCalendarEventCommand message, IMessageHandlerContext context)
-        {
-            var model = Mapper.Map<CalendarEventModel>(message);
-            await _calendarService.UpdateEvent(model);
+        {           
+            await _calendarService.UpdateEvent(message.Model);
         }
 
         public async Task Handle(DeleteCalendarEventCommand message, IMessageHandlerContext context)
@@ -42,9 +39,8 @@ namespace LifeManager.CalendarService.Handlers
         }
 
         public async Task Handle(GetCalendarEventCommand message, IMessageHandlerContext context)
-        {
-            var model = Mapper.Map<CalendarEventModel>(message);
-            var events = await _calendarService.GetEvent(model);
+        {            
+            var events = await _calendarService.GetEvent(message.Model);
             await context.Reply(events);
         }
 

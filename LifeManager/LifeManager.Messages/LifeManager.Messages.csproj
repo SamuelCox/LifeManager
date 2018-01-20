@@ -8,4 +8,8 @@
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0012" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LifeManager.Models\LifeManager.Models.csproj" />
+  </ItemGroup>
+
 </Project>

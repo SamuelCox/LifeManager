@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LifeManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
@@ -18,29 +20,39 @@ namespace LifeManager.Rest.Controllers
             _endpointInstance = endpointInstance;
         }
 
-        //public async Task<IActionResult> Add()
-        //{
+        [Authorize]
+        [HttpPost("api/Calendar/Add")]
+        public async Task<IActionResult> Add(CalendarEventModel model)
+        {
+            return null;
+        }
 
-        //}
+        [Authorize]
+        [HttpPost("api/Calendar/Update")]
+        public async Task<IActionResult> Update(CalendarEventModel model)
+        {
+            return null;
+        }
 
-        //public async Task<IActionResult> Update()
-        //{
+        [Authorize]
+        [HttpPost("api/Calendar/Delete")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return null;
+        }
 
-        //}
+        [Authorize]
+        [HttpGet("api/Calendar/Get")]
+        public async Task<IActionResult> Get(CalendarEventModel model)
+        {
+            return null;
+        }
 
-        //public async Task<IActionResult> Delete()
-        //{
-
-        //}
-
-        //public async Task<IActionResult> Get()
-        //{
-
-        //}
-
-        //public async Task<IActionResult> GetAll()
-        //{
-
-        //}
+        [Authorize]
+        [HttpGet("api/Calendar/GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return null;
+        }
     }
 }

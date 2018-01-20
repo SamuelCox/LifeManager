@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using LifeManager.CalendarService.Models;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
+using LifeManager.Models;
 
 namespace LifeManager.CalendarService.Services
 {
@@ -35,15 +35,17 @@ namespace LifeManager.CalendarService.Services
             await _repository.Delete(id);
         }
 
-        public async Task<IEnumerable<CalendarEvent>> GetEvent(CalendarEventModel model)
+        public async Task<IEnumerable<CalendarEventModel>> GetEvent(CalendarEventModel model)
         {
-            return await _repository.Get(model.Id, model.Name, model.LocationName,
+            var entities =  await _repository.Get(model.Id, model.Name, model.LocationName,
                 model.StartDate, model.EndDate);
+            return Mapper.Map<IEnumerable<CalendarEventModel>>(entities);
         }
 
-        public async Task<IEnumerable<CalendarEvent>> GetAllEvents()
+        public async Task<IEnumerable<CalendarEventModel>> GetAllEvents()
         {
-            return await _repository.GetAll();
+            var entities = await _repository.GetAll();
+            return Mapper.Map<IEnumerable<CalendarEventModel>>(entities);
         }
     }
 }

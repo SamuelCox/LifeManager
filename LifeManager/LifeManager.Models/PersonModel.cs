@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace LifeManager.Messages.Calendar
+namespace LifeManager.Models
 {
-    [ExcludeFromCodeCoverage]
-    public class PersonDTO
+    public class PersonModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

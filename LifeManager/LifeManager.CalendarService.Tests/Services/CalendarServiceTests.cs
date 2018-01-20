@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using LifeManager.CalendarService.Models;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
 using LifeManager.Messages.Calendar;
+using LifeManager.Models;
 using Moq;
 using NUnit.Framework;
 
@@ -25,7 +25,7 @@ namespace LifeManager.CalendarService.Tests.Services
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap();
-                cfg.CreateMap<PersonDTO, Person>().ReverseMap();
+                cfg.CreateMap<PersonModel, Person>().ReverseMap();
             });
             _mockCalendarRepository = new Mock<ICalendarRepository>();
         }

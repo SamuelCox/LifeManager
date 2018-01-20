@@ -2,16 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using LifeManager.Models;
 
 namespace LifeManager.Messages.Calendar
 {
     [ExcludeFromCodeCoverage]
     public class AddCalendarEventCommand : ICommand
     {        
-        public string Name { get; set; }
-        public string LocationName { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public IEnumerable<PersonDTO> People { get; set; }
+        public CalendarEventModel Model { get; set; }
     }
 }

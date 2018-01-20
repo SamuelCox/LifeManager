@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using LifeManager.CalendarService.Models;
-using LifeManager.Data.Entities;
+using LifeManager.Models;
 
 namespace LifeManager.CalendarService.Services
 {
@@ -12,7 +11,7 @@ namespace LifeManager.CalendarService.Services
         Task CreateEvent(CalendarEventModel model);
         Task UpdateEvent(CalendarEventModel model);
         Task DeleteEvent(Guid id);
-        Task<IEnumerable<CalendarEvent>> GetEvent(CalendarEventModel model);
-        Task<IEnumerable<CalendarEvent>> GetAllEvents();
+        Task<IEnumerable<CalendarEventModel>> GetEvent(CalendarEventModel model);
+        Task<IEnumerable<CalendarEventModel>> GetAllEvents();
     }
 }

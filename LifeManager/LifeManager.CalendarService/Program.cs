@@ -4,11 +4,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
-using LifeManager.CalendarService.Models;
 using LifeManager.CalendarService.Services;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
 using LifeManager.Messages.Calendar;
+using LifeManager.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using NServiceBus;
@@ -32,10 +32,7 @@ namespace LifeManager.CalendarService
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap();
-                cfg.CreateMap<PersonDTO, Person>().ReverseMap();
-                cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
-                cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
-                cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<Person, PersonModel>().ReverseMap();
             });
             
 

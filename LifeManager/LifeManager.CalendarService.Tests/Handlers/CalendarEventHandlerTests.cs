@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using LifeManager.CalendarService.Handlers;
-using LifeManager.CalendarService.Models;
 using LifeManager.CalendarService.Services;
 using LifeManager.Data.Entities;
 using LifeManager.Messages.Calendar;
+using LifeManager.Models;
 using Moq;
 using NServiceBus;
 using NUnit.Framework;
@@ -21,14 +20,7 @@ namespace LifeManager.CalendarService.Tests.Handlers
 
         [SetUp]
         public void SetUp()
-        {
-            Mapper.Reset();
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
-                cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
-                cfg.CreateMap<GetCalendarEventCommand, CalendarEventModel>().ReverseMap();
-            });
+        {            
             _mockMessageHandlerContext = new Mock<IMessageHandlerContext>();
             _mockCalendarService = new Mock<ICalendarService>();
         }
@@ -37,10 +29,11 @@ namespace LifeManager.CalendarService.Tests.Handlers
         public async Task HandleAdd_ShouldCallAddOnService()
         {
             // Data
-            var addCalendarEventCommand = new AddCalendarEventCommand();
+            var addCalendarEventCommand = new AddCalendarEventCommand{Model = new CalendarEventModel()};
 
             // Setup
-            _mockCalendarService.Setup(x => x.CreateEvent(It.IsAny<CalendarEventModel>())).Returns(Task.CompletedTask).Verifiable();
+            _mockCalendarService.Setup(x => x.CreateEvent(It.Is<CalendarEventModel>(y => y == addCalendarEventCommand.Model)))
+                .Returns(Task.CompletedTask).Verifiable();
 
             // Test
             var handler = new CalendarEventHandler(_mockCalendarService.Object);
@@ -54,10 +47,11 @@ namespace LifeManager.CalendarService.Tests.Handlers
         public async Task HandleUpdate_ShouldCallUpdateOnService()
         {
             // Data
-            var updateCalendarEventCommand = new UpdateCalendarEventCommand();
+            var updateCalendarEventCommand = new UpdateCalendarEventCommand{Model = new CalendarEventModel()};
 
             // Setup
-            _mockCalendarService.Setup(x => x.UpdateEvent(It.IsAny<CalendarEventModel>())).Returns(Task.CompletedTask).Verifiable();
+            _mockCalendarService.Setup(x => x.UpdateEvent(It.Is<CalendarEventModel>(y => y == updateCalendarEventCommand.Model)))
+                .Returns(Task.CompletedTask).Verifiable();
 
             // Test
             var handler = new CalendarEventHandler(_mockCalendarService.Object);
@@ -89,14 +83,15 @@ namespace LifeManager.CalendarService.Tests.Handlers
         public async Task HandleGet_ShouldCallGetOnServiceAndReplyOnContext()
         {
             // Data
-            var getCalendarEventCommand = new GetCalendarEventCommand{ Name = "test_name"};
-            IEnumerable<CalendarEvent> calendarEvents = new List<CalendarEvent>
+            var calendarEventModel = new CalendarEventModel {Name = "test_name"};
+            var getCalendarEventCommand = new GetCalendarEventCommand{ Model = calendarEventModel};
+            IEnumerable<CalendarEventModel> calendarEvents = new List<CalendarEventModel>
             {
-                new CalendarEvent{ Name = "test_name"}
+                calendarEventModel
             };     
             
             //Setup
-            _mockCalendarService.Setup(x => x.GetEvent(It.Is<CalendarEventModel>(y => y.Name == getCalendarEventCommand.Name)))
+            _mockCalendarService.Setup(x => x.GetEvent(It.Is<CalendarEventModel>(y => y.Name == getCalendarEventCommand.Model.Name)))
                 .Returns(Task.FromResult(calendarEvents)).Verifiable();
             _mockMessageHandlerContext.Setup(x => x.Reply(calendarEvents, It.IsAny<ReplyOptions>()))
                 .Returns(Task.CompletedTask).Verifiable();
@@ -115,9 +110,9 @@ namespace LifeManager.CalendarService.Tests.Handlers
         {
             //Data
             var getAllCommand = new GetAllCalendarEventsCommand();
-            IEnumerable<CalendarEvent> calendarEvents = new List<CalendarEvent>
+            IEnumerable<CalendarEventModel> calendarEvents = new List<CalendarEventModel>
             {
-                new CalendarEvent{ Name = "test_name"}
+                new CalendarEventModel{ Name = "test_name"}
             };
 
             //Setup
