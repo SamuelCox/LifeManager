@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0012" />
   </ItemGroup>
 
@@ -20,6 +21,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LifeManager.Data\LifeManager.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NServiceBus.Transport.RabbitMQ">
+      <HintPath>..\..\..\..\Users\samrc\.nuget\packages\nservicebus.rabbitmq\5.0.0-beta0029\lib\netstandard2.0\NServiceBus.Transport.RabbitMQ.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

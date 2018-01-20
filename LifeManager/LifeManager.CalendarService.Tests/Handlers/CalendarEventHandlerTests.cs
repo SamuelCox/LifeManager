@@ -6,6 +6,7 @@ using AutoMapper;
 using LifeManager.CalendarService.Handlers;
 using LifeManager.CalendarService.Models;
 using LifeManager.CalendarService.Services;
+using LifeManager.Data.Entities;
 using LifeManager.Messages.Calendar;
 using Moq;
 using NServiceBus;
@@ -26,6 +27,7 @@ namespace LifeManager.CalendarService.Tests.Handlers
             {
                 cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
                 cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<GetCalendarEventCommand, CalendarEventModel>().ReverseMap();
             });
             _mockMessageHandlerContext = new Mock<IMessageHandlerContext>();
             _mockCalendarService = new Mock<ICalendarService>();
@@ -82,5 +84,57 @@ namespace LifeManager.CalendarService.Tests.Handlers
             // Analysis
             _mockCalendarService.Verify();
         }
+
+        [Test]
+        public async Task HandleGet_ShouldCallGetOnServiceAndReplyOnContext()
+        {
+            // Data
+            var getCalendarEventCommand = new GetCalendarEventCommand{ Name = "test_name"};
+            IEnumerable<CalendarEvent> calendarEvents = new List<CalendarEvent>
+            {
+                new CalendarEvent{ Name = "test_name"}
+            };     
+            
+            //Setup
+            _mockCalendarService.Setup(x => x.GetEvent(It.Is<CalendarEventModel>(y => y.Name == getCalendarEventCommand.Name)))
+                .Returns(Task.FromResult(calendarEvents)).Verifiable();
+            _mockMessageHandlerContext.Setup(x => x.Reply(calendarEvents, It.IsAny<ReplyOptions>()))
+                .Returns(Task.CompletedTask).Verifiable();
+
+            //Test
+            var handler = new CalendarEventHandler(_mockCalendarService.Object);
+            await handler.Handle(getCalendarEventCommand, _mockMessageHandlerContext.Object);
+
+            //Analysis
+            _mockCalendarService.Verify();
+            _mockMessageHandlerContext.Verify();
+        }
+
+        [Test]
+        public async Task HandleGetAll_ShouldCallGetAll()
+        {
+            //Data
+            var getAllCommand = new GetAllCalendarEventsCommand();
+            IEnumerable<CalendarEvent> calendarEvents = new List<CalendarEvent>
+            {
+                new CalendarEvent{ Name = "test_name"}
+            };
+
+            //Setup
+            _mockCalendarService.Setup(x => x.GetAllEvents()).Returns(Task.FromResult(calendarEvents))
+                .Verifiable();
+            _mockMessageHandlerContext.Setup(x => x.Reply(calendarEvents, It.IsAny<ReplyOptions>()))
+                .Returns(Task.CompletedTask).Verifiable();
+
+            //Test
+            var handler = new CalendarEventHandler(_mockCalendarService.Object);
+            await handler.Handle(getAllCommand, _mockMessageHandlerContext.Object);
+
+            //Analysis
+            _mockCalendarService.Verify();
+            _mockMessageHandlerContext.Verify();
+        }
+
+
     }
 }

@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NServiceBus;
 
 namespace LifeManager.Rest
 {
@@ -58,6 +59,14 @@ namespace LifeManager.Rest
             var userStore = new UserStore<User>(db, null);
             var userManager = new UserManagerWrapper(userStore, null, new PasswordHasher<User>(), null, null, null, null, null, null);
             services.AddSingleton<UserManager<User>>(x => userManager);
+
+            var endpointConfiguration = new EndpointConfiguration("LifeManager.Rest");
+            endpointConfiguration.UseTransport<RabbitMQTransport>().ConnectionString(Configuration["RabbitMqConnectionString"])
+                .UseConventionalRoutingTopology();
+            endpointConfiguration.UsePersistence<InMemoryPersistence>();
+            endpointConfiguration.LicensePath(Configuration["NServiceBusLicense"]);
+            var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
+            services.AddSingleton(endpoint);
 
             db.Database.EnsureCreated();
             services.AddMvc(options =>

@@ -41,14 +41,17 @@ namespace LifeManager.CalendarService.Handlers
             await _calendarService.DeleteEvent(message.Id);
         }
 
-        public Task Handle(GetCalendarEventCommand message, IMessageHandlerContext context)
+        public async Task Handle(GetCalendarEventCommand message, IMessageHandlerContext context)
         {
-            throw new NotImplementedException();
+            var model = Mapper.Map<CalendarEventModel>(message);
+            var events = await _calendarService.GetEvent(model);
+            await context.Reply(events);
         }
 
-        public Task Handle(GetAllCalendarEventsCommand message, IMessageHandlerContext context)
+        public async Task Handle(GetAllCalendarEventsCommand message, IMessageHandlerContext context)
         {
-            throw new NotImplementedException();
+            var events = await _calendarService.GetAllEvents();
+            await context.Reply(events);
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using NServiceBus;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LifeManager.Messages.Calendar
 {
+    [ExcludeFromCodeCoverage]
     public class AddCalendarEventCommand : ICommand
     {        
         public string Name { get; set; }

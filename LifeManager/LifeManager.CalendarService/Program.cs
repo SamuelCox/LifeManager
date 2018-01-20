@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
@@ -14,7 +15,8 @@ using NServiceBus;
 
 namespace LifeManager.CalendarService
 {
-    class Program
+    [ExcludeFromCodeCoverage]
+    public class Program
     {
         static async Task Main(string[] args)
         {
@@ -32,6 +34,7 @@ namespace LifeManager.CalendarService
                 cfg.CreateMap<CalendarEvent, CalendarEventModel>().ReverseMap();
                 cfg.CreateMap<PersonDTO, Person>().ReverseMap();
                 cfg.CreateMap<AddCalendarEventCommand, CalendarEventModel>().ReverseMap();
+                cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
                 cfg.CreateMap<UpdateCalendarEventCommand, CalendarEventModel>().ReverseMap();
             });
             
