@@ -58,12 +58,15 @@ namespace LifeManager.Rest
             var db = new AuthContext(optionsBuilder.Options);
             var userStore = new UserStore<User>(db, null);
             var userManager = new UserManagerWrapper(userStore, null, new PasswordHasher<User>(), null, null, null, null, null, null);
-            services.AddSingleton<UserManager<User>>(x => userManager);
+            services.AddSingleton<IUserManagerWrapper>(userManager);
 
             var endpointConfiguration = new EndpointConfiguration("LifeManager.Rest");
             endpointConfiguration.UseTransport<RabbitMQTransport>().ConnectionString(Configuration["RabbitMqConnectionString"])
                 .UseConventionalRoutingTopology();
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
+            var guid = Guid.NewGuid();
+            endpointConfiguration.MakeInstanceUniquelyAddressable(guid.ToString());
+            endpointConfiguration.EnableInstallers();
             endpointConfiguration.LicensePath(Configuration["NServiceBusLicense"]);
             var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton(endpoint);
@@ -83,6 +86,6 @@ namespace LifeManager.Rest
             }                     
             app.UseAuthentication();
             app.UseMvc();
-        }
+        }        
     }
 }

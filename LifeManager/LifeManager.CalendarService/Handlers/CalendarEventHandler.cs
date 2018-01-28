@@ -41,13 +41,13 @@ namespace LifeManager.CalendarService.Handlers
         public async Task Handle(GetCalendarEventCommand message, IMessageHandlerContext context)
         {            
             var events = await _calendarService.GetEvent(message.Model);
-            await context.Reply(events);
+            await context.Reply(new GetResponse { Models = events });
         }
 
         public async Task Handle(GetAllCalendarEventsCommand message, IMessageHandlerContext context)
         {
             var events = await _calendarService.GetAllEvents();
-            await context.Reply(events);
+            await context.Reply(new GetResponse{ Models = events });
         }
     }
 }

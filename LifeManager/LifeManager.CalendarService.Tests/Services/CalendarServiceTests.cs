@@ -48,6 +48,24 @@ namespace LifeManager.CalendarService.Tests.Services
         }
 
         [Test]
+        public async Task CreateEvent_ShouldCreateNewGuidIfPassedEmptyGuid()
+        {
+            //Data
+            var calendarEventModel = new CalendarEventModel { Id = Guid.Empty };
+
+            //Setup
+            _mockCalendarRepository.Setup(x => x.Add(It.Is<CalendarEvent>(y => y.Id != Guid.Empty)))
+                .Returns(Task.CompletedTask).Verifiable();
+
+            //Test
+            var calendarService = new CalendarService.Services.CalendarService(_mockCalendarRepository.Object);
+            await calendarService.CreateEvent(calendarEventModel);
+
+            //Analysis
+            _mockCalendarRepository.Verify();
+        }
+
+        [Test]
         public async Task UpdateEvent_ShouldCallRepositoryUpdate()
         {
             //Data

@@ -20,7 +20,11 @@ namespace LifeManager.CalendarService.Services
 
         public async Task CreateEvent(CalendarEventModel model)
         {
-            var calendarEvent = Mapper.Map<CalendarEvent>(model);
+            if (model.Id == Guid.Empty)
+            {
+                model.Id = Guid.NewGuid();
+            }
+            var calendarEvent = Mapper.Map<CalendarEvent>(model);            
             await _repository.Add(calendarEvent);
         }
 

@@ -27,6 +27,7 @@ namespace LifeManager.CalendarService
             endpointConfiguration.UseTransport<RabbitMQTransport>().ConnectionString(config["RabbitMqConnectionString"])
                 .UseConventionalRoutingTopology();
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
+            endpointConfiguration.EnableInstallers();
             endpointConfiguration.LicensePath(config["NServiceBusLicense"]);
 
             Mapper.Initialize(cfg =>

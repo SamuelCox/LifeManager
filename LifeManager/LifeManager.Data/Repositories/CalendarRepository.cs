@@ -18,9 +18,13 @@ namespace LifeManager.Data.Repositories
         }
 
         public async Task Add(CalendarEvent calendarEvent)
-        {
+        {            
             var calendarEvents = _db.GetCollection<CalendarEvent>("CalendarEvents");
-            await calendarEvents.InsertOneAsync(calendarEvent);
+            var exists = await EntityExists(calendarEvent.Id, calendarEvents);
+            if (!exists)
+            {
+                await calendarEvents.InsertOneAsync(calendarEvent);
+            }
         }
 
         public async Task Update(CalendarEvent calendarEvent)
@@ -75,6 +79,18 @@ namespace LifeManager.Data.Repositories
         {
             var events = await _db.GetCollection<CalendarEvent>("CalendarEvents").FindAsync(Builders<CalendarEvent>.Filter.Empty);
             return events.ToList();
+        }
+
+        private async Task<bool> EntityExists(Guid id, IMongoCollection<CalendarEvent> collection)
+        {
+            var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, id);
+            var events = await _db.GetCollection<CalendarEvent>("CalendarEvents").FindAsync(filter);
+            if (events != null)
+            {
+                return true;
+            }
+
+            return false;
         }
 
 

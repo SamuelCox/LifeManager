@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0012" />
+    <PackageReference Include="NServiceBus.Callbacks" Version="3.0.0-beta0003" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="5.0.0-beta0032" />
   </ItemGroup>
 
@@ -22,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LifeManager.Data\LifeManager.Data.csproj" />
+    <ProjectReference Include="..\LifeManager.Messages\LifeManager.Messages.csproj" />
     <ProjectReference Include="..\LifeManager.Models\LifeManager.Models.csproj" />
   </ItemGroup>
 
