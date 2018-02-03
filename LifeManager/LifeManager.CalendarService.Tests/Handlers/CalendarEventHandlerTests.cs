@@ -93,7 +93,7 @@ namespace LifeManager.CalendarService.Tests.Handlers
             //Setup
             _mockCalendarService.Setup(x => x.GetEvent(It.Is<CalendarEventModel>(y => y.Name == getCalendarEventCommand.Model.Name)))
                 .Returns(Task.FromResult(calendarEvents)).Verifiable();
-            _mockMessageHandlerContext.Setup(x => x.Reply(calendarEvents, It.IsAny<ReplyOptions>()))
+            _mockMessageHandlerContext.Setup(x => x.Reply(It.Is<GetResponse>(y => y.Models == calendarEvents), It.IsAny<ReplyOptions>()))
                 .Returns(Task.CompletedTask).Verifiable();
 
             //Test
@@ -118,7 +118,7 @@ namespace LifeManager.CalendarService.Tests.Handlers
             //Setup
             _mockCalendarService.Setup(x => x.GetAllEvents()).Returns(Task.FromResult(calendarEvents))
                 .Verifiable();
-            _mockMessageHandlerContext.Setup(x => x.Reply(calendarEvents, It.IsAny<ReplyOptions>()))
+            _mockMessageHandlerContext.Setup(x => x.Reply(It.Is<GetResponse>(y => y.Models == calendarEvents), It.IsAny<ReplyOptions>()))
                 .Returns(Task.CompletedTask).Verifiable();
 
             //Test

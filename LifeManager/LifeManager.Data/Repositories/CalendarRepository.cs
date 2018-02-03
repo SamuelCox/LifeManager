@@ -84,7 +84,7 @@ namespace LifeManager.Data.Repositories
         private async Task<bool> EntityExists(Guid id, IMongoCollection<CalendarEvent> collection)
         {
             var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, id);
-            var events = await _db.GetCollection<CalendarEvent>("CalendarEvents").FindAsync(filter);
+            var events = await collection.FindAsync(filter);
             if (events != null)
             {
                 return true;
