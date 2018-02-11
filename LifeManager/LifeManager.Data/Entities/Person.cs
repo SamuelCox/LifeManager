@@ -6,7 +6,7 @@ using System.Text;
 namespace LifeManager.Data.Entities
 {
     [ExcludeFromCodeCoverage]
-    public class Person
+    public class Person : IMongoEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -8,38 +8,14 @@ using MongoDB.Driver;
 
 namespace LifeManager.Data.Repositories
 {
-    public class CalendarRepository : ICalendarRepository
+    public class CalendarRepository : MongoRepository<CalendarEvent>, ICalendarRepository
     {
         private readonly IMongoDatabase _db;        
 
-        public CalendarRepository(MongoClient mongoClient)
-        {            
-            _db = mongoClient.GetDatabase("LifeManager");            
-        }
-
-        public async Task Add(CalendarEvent calendarEvent)
-        {            
-            var calendarEvents = _db.GetCollection<CalendarEvent>("CalendarEvents");
-            var exists = await EntityExists(calendarEvent.Id, calendarEvents);
-            if (!exists)
-            {
-                await calendarEvents.InsertOneAsync(calendarEvent);
-            }
-        }
-
-        public async Task Update(CalendarEvent calendarEvent)
+        public CalendarRepository(IMongoDatabase database) : base(database, "CalendarEvents")
         {
-            var calendarEvents = _db.GetCollection<CalendarEvent>("CalendarEvents");
-            var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, calendarEvent.Id);
-            await calendarEvents.UpdateOneAsync(filter, new ObjectUpdateDefinition<CalendarEvent>(calendarEvent));
-        }
-
-        public async Task Delete(Guid id)
-        {
-            var calendarEvents = _db.GetCollection<CalendarEvent>("CalendarEvents");
-            var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, id);
-            await calendarEvents.DeleteOneAsync(filter);
-        }
+            _db = database;
+        }        
 
         public async Task<IEnumerable<CalendarEvent>> Get(Guid? id, string name, string locationName, DateTime? startDate, DateTime? endDate)
         {
@@ -73,26 +49,6 @@ namespace LifeManager.Data.Repositories
             var events = await _db.GetCollection<CalendarEvent>("CalendarEvents").FindAsync(filter);
 
             return events.ToList();
-        }
-
-        public async Task<IEnumerable<CalendarEvent>> GetAll()
-        {
-            var events = await _db.GetCollection<CalendarEvent>("CalendarEvents").FindAsync(Builders<CalendarEvent>.Filter.Empty);
-            return events.ToList();
-        }
-
-        private async Task<bool> EntityExists(Guid id, IMongoCollection<CalendarEvent> collection)
-        {
-            var filter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, id);
-            var events = await collection.FindAsync(filter);
-            if (events != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
+        }       
     }
 }

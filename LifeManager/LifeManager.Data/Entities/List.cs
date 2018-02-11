@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LifeManager.Data.Entities
 {
-    public class List
+    public class List : IMongoEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -38,8 +38,9 @@ namespace LifeManager.CalendarService
             
 
             var diBuilder = new ContainerBuilder();
-            diBuilder.RegisterInstance(new MongoClient())
-                .SingleInstance();
+            var mongoClient = new MongoClient();
+            var database = mongoClient.GetDatabase("CalendarEvents");
+            diBuilder.RegisterInstance(database);
             diBuilder.RegisterType<CalendarRepository>()
                 .As<ICalendarRepository>()
                 .SingleInstance();
@@ -64,6 +65,7 @@ namespace LifeManager.CalendarService
 
             string input = string.Empty;
 
+            
             while (input != "EXIT")
             {
                 input = Console.ReadLine();

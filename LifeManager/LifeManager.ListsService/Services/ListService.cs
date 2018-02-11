@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LifeManager.ListsService.Services
 {
-    public class ListService
+    public class ListService : IListService
     {
     }
 }

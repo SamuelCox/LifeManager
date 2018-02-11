@@ -3,34 +3,35 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using LifeManager.Data.Entities;
+using MongoDB.Driver;
 
 namespace LifeManager.Data.Repositories
 {
-    public class ListRepository : IListRepository
+    public class ListRepository : MongoRepository<List>, IListRepository
     {
-        public async Task Add(List list)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly IMongoDatabase _db;
 
-        public async Task Update(List list)
+        public ListRepository(IMongoDatabase database) : base(database, "Lists")
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+            _db = database;
+        }        
 
         public async Task<IEnumerable<List>> Get(Guid? id, string name)
         {
-            throw new NotImplementedException();
-        }
+            var filter = Builders<List>.Filter.Empty;
+            if (id.HasValue)
+            {
+                var idFilter = Builders<List>.Filter.Eq(x => x.Id, id);
+                filter = Builders<List>.Filter.And(filter, idFilter);
+            }
 
-        public async Task<IEnumerable<List>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+            if (!string.IsNullOrEmpty(name))
+            {
+                var nameFilter = Builders<List>.Filter.Eq(x => x.Name, name);
+                filter = Builders<List>.Filter.And(filter, nameFilter);
+            }
+            var lists = await _db.GetCollection<List>("Lists").FindAsync(filter);
+            return lists.ToList();
+        }                
     }
 }
