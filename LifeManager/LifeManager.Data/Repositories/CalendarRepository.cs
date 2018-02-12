@@ -12,7 +12,7 @@ namespace LifeManager.Data.Repositories
     {
         private readonly IMongoDatabase _db;        
 
-        public CalendarRepository(IMongoDatabase database) : base(database, "CalendarEvents")
+        public CalendarRepository(IMongoDatabase database) : base(database, "calendarevents")
         {
             _db = database;
         }        
@@ -46,7 +46,7 @@ namespace LifeManager.Data.Repositories
                 filter = Builders<CalendarEvent>.Filter.And(filter, endDateFilter);
             }
 
-            var events = await _db.GetCollection<CalendarEvent>("CalendarEvents").FindAsync(filter);
+            var events = await _db.GetCollection<CalendarEvent>("calendarevents").FindAsync(filter);
 
             return events.ToList();
         }       

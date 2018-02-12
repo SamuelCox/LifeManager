@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
 using LifeManager.CalendarService.Services;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
-using LifeManager.Messages.Calendar;
 using LifeManager.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
@@ -39,7 +37,7 @@ namespace LifeManager.CalendarService
 
             var diBuilder = new ContainerBuilder();
             var mongoClient = new MongoClient();
-            var database = mongoClient.GetDatabase("CalendarEvents");
+            var database = mongoClient.GetDatabase("calendarevents");
             diBuilder.RegisterInstance(database);
             diBuilder.RegisterType<CalendarRepository>()
                 .As<ICalendarRepository>()
@@ -62,7 +60,7 @@ namespace LifeManager.CalendarService
             {
                 Console.WriteLine(e);
             }
-
+            
             string input = string.Empty;
 
             

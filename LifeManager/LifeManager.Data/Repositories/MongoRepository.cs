@@ -25,8 +25,7 @@ namespace LifeManager.Data.Repositories
             var exists = await EntityExists(entity.Id, entities);
             if (!exists)
             {
-                await entities.InsertOneAsync(entity);
-                
+                await entities.InsertOneAsync(entity);                
             }
         }
 
