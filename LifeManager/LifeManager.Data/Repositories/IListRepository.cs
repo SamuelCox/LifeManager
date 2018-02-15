@@ -11,7 +11,7 @@ namespace LifeManager.Data.Repositories
         Task Add(List list);
         Task Update(List list);
         Task Delete(Guid id);
-        Task<IEnumerable<List>> Get(Guid? id, string name);
-        Task<IEnumerable<List>> GetAll();
+        Task<IEnumerable<List>> Get(Guid? id, string userId, string name);
+        Task<IEnumerable<List>> GetAll(string userId);
     }
 }

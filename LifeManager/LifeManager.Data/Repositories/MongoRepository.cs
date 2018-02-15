@@ -49,9 +49,10 @@ namespace LifeManager.Data.Repositories
             return entities.ToList();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll(string userId)
         {
-            var entities = await _db.GetCollection<T>(_collectionName).FindAsync(Builders<T>.Filter.Empty);
+            var filter = Builders<T>.Filter.Eq(x => x.UserId, userId);
+            var entities = await _db.GetCollection<T>(_collectionName).FindAsync(filter);
             return entities.ToList();
         }
 

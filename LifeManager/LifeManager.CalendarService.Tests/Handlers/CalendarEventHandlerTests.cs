@@ -109,14 +109,15 @@ namespace LifeManager.CalendarService.Tests.Handlers
         public async Task HandleGetAll_ShouldCallGetAll()
         {
             //Data
-            var getAllCommand = new GetAllCalendarEventsCommand();
+            var userId = "test";
+            var getAllCommand = new GetAllCalendarEventsCommand{ UserId = userId};
             IEnumerable<CalendarEventModel> calendarEvents = new List<CalendarEventModel>
             {
                 new CalendarEventModel{ Name = "test_name"}
             };
 
             //Setup
-            _mockCalendarService.Setup(x => x.GetAllEvents()).Returns(Task.FromResult(calendarEvents))
+            _mockCalendarService.Setup(x => x.GetAllEvents(userId)).Returns(Task.FromResult(calendarEvents))
                 .Verifiable();
             _mockMessageHandlerContext.Setup(x => x.Reply(It.Is<GetResponse>(y => y.Models == calendarEvents), It.IsAny<ReplyOptions>()))
                 .Returns(Task.CompletedTask).Verifiable();

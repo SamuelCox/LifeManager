@@ -17,7 +17,7 @@ namespace LifeManager.Data.Repositories
             _db = database;
         }        
 
-        public async Task<IEnumerable<CalendarEvent>> Get(Guid? id, string name, string locationName, DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<CalendarEvent>> Get(Guid? id, string userId, string name, string locationName, DateTime? startDate, DateTime? endDate)
         {
             var filter = Builders<CalendarEvent>.Filter.Empty;
             if (id.HasValue)
@@ -25,6 +25,10 @@ namespace LifeManager.Data.Repositories
                 var idFilter = Builders<CalendarEvent>.Filter.Eq(x => x.Id, id);
                 filter = Builders<CalendarEvent>.Filter.And(filter, idFilter);
             }
+
+            var userIdFilter = Builders<CalendarEvent>.Filter.Eq(x => x.UserId, userId);
+            filter = Builders<CalendarEvent>.Filter.And(filter, userIdFilter);
+
             if (!string.IsNullOrEmpty(name))
             {
                 var nameFilter = Builders<CalendarEvent>.Filter.Eq(x => x.Name, name);

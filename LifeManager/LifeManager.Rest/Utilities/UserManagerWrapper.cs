@@ -15,7 +15,7 @@ namespace LifeManager.Rest.Utilities
             IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators,ILookupNormalizer normalizer,
             IdentityErrorDescriber errorDescriber, IServiceProvider serviceProvider, ILogger<UserManager<User>> logger) :
             base(userStore, options, hasher, userValidators, passwordValidators, normalizer, errorDescriber, serviceProvider, logger)
-        {            
+        { 
         }
 
     }

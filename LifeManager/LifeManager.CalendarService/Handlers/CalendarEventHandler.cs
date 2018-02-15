@@ -45,8 +45,8 @@ namespace LifeManager.CalendarService.Handlers
         }
 
         public async Task Handle(GetAllCalendarEventsCommand message, IMessageHandlerContext context)
-        {
-            var events = await _calendarService.GetAllEvents();
+        {            
+            var events = await _calendarService.GetAllEvents(message.UserId);
             await context.Reply(new GetResponse{ Models = events });
         }
     }

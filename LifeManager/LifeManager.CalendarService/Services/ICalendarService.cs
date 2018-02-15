@@ -12,6 +12,6 @@ namespace LifeManager.CalendarService.Services
         Task UpdateEvent(CalendarEventModel model);
         Task DeleteEvent(Guid id);
         Task<IEnumerable<CalendarEventModel>> GetEvent(CalendarEventModel model);
-        Task<IEnumerable<CalendarEventModel>> GetAllEvents();
+        Task<IEnumerable<CalendarEventModel>> GetAllEvents(string userId);
     }
 }

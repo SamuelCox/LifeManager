@@ -53,6 +53,8 @@ namespace LifeManager.Rest
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))                        
                     };
                 });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             var optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseSqlServer(Configuration["Connection"]);
             var db = new AuthContext(optionsBuilder.Options);

@@ -12,6 +12,9 @@ namespace LifeManager.Data.Entities
         [BsonElement("Id")]
         public Guid Id { get; set; }
 
+        [BsonElement("UserId")]
+        public string UserId { get; set; }
+
         [BsonElement("Name")]
         public string Name { get; set; }
 

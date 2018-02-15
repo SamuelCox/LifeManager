@@ -16,7 +16,7 @@ namespace LifeManager.Data.Repositories
             _db = database;
         }        
 
-        public async Task<IEnumerable<List>> Get(Guid? id, string name)
+        public async Task<IEnumerable<List>> Get(Guid? id, string userId, string name)
         {
             var filter = Builders<List>.Filter.Empty;
             if (id.HasValue)
@@ -24,6 +24,9 @@ namespace LifeManager.Data.Repositories
                 var idFilter = Builders<List>.Filter.Eq(x => x.Id, id);
                 filter = Builders<List>.Filter.And(filter, idFilter);
             }
+
+            var userIdFilter = Builders<List>.Filter.Eq(x => x.UserId, userId);
+            filter = Builders<List>.Filter.And(filter, userIdFilter);
 
             if (!string.IsNullOrEmpty(name))
             {

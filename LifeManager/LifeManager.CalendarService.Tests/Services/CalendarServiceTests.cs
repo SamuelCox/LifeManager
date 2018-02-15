@@ -110,7 +110,7 @@ namespace LifeManager.CalendarService.Tests.Services
             }.ToList();
 
             //Setup
-            _mockCalendarRepository.Setup(x => x.Get(calendarEventModel.Id, null, null, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            _mockCalendarRepository.Setup(x => x.Get(calendarEventModel.Id, calendarEventModel.UserId, null, null, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(Task.FromResult(calendarEvents)).Verifiable();
 
             //Test
@@ -127,7 +127,7 @@ namespace LifeManager.CalendarService.Tests.Services
         public async Task GetAllEvents_ShouldReturnEvents()
         {
             //Data
-            
+            var userId = "test";
             IEnumerable<CalendarEvent> calendarEvents = new[]
             {
                 new CalendarEvent{ Id = Guid.NewGuid()},
@@ -135,12 +135,12 @@ namespace LifeManager.CalendarService.Tests.Services
             }.ToList();
 
             //Setup
-            _mockCalendarRepository.Setup(x => x.GetAll())
+            _mockCalendarRepository.Setup(x => x.GetAll(userId))
                 .Returns(Task.FromResult(calendarEvents)).Verifiable();
 
             //Test
             var calendarService = new CalendarService.Services.CalendarService(_mockCalendarRepository.Object);
-            var result = await calendarService.GetAllEvents();
+            var result = await calendarService.GetAllEvents(userId);
 
             //Analysis
             Assert.AreEqual(2, result.Count());

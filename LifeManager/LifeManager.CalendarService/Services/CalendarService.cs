@@ -41,14 +41,14 @@ namespace LifeManager.CalendarService.Services
 
         public async Task<IEnumerable<CalendarEventModel>> GetEvent(CalendarEventModel model)
         {
-            var entities =  await _repository.Get(model.Id, model.Name, model.LocationName,
+            var entities =  await _repository.Get(model.Id, model.UserId, model.Name, model.LocationName,
                 model.StartDate, model.EndDate);
             return Mapper.Map<IEnumerable<CalendarEventModel>>(entities);
         }
 
-        public async Task<IEnumerable<CalendarEventModel>> GetAllEvents()
+        public async Task<IEnumerable<CalendarEventModel>> GetAllEvents(string userId)
         {
-            var entities = await _repository.GetAll();
+            var entities = await _repository.GetAll(userId);
             return Mapper.Map<IEnumerable<CalendarEventModel>>(entities);
         }
     }
