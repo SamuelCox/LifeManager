@@ -52,8 +52,7 @@ namespace LifeManager.Rest
                         ValidAudience = Configuration["Jwt:Isser"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))                        
                     };
-                });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+                });            
 
             var optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseSqlServer(Configuration["Connection"]);
@@ -69,6 +68,7 @@ namespace LifeManager.Rest
             var guid = Guid.NewGuid();
             endpointConfiguration.MakeInstanceUniquelyAddressable(guid.ToString());
             endpointConfiguration.EnableInstallers();
+            endpointConfiguration.EnableCallbacks();
             endpointConfiguration.LicensePath(Configuration["NServiceBusLicense"]);
             var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton(endpoint);
