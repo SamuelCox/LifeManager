@@ -34,7 +34,7 @@ namespace LifeManager.CalendarService.Tests.Services
         public async Task CreateEvent_ShouldCallRepositoryAdd()
         {
             //Data
-            var calendarEventModel = new CalendarEventModel { Id = Guid.NewGuid()};
+            var calendarEventModel = new CalendarEventModel();
 
             //Setup
             _mockCalendarRepository.Setup(x => x.Add(It.IsAny<CalendarEvent>())).Returns(Task.CompletedTask).Verifiable();
@@ -46,30 +46,13 @@ namespace LifeManager.CalendarService.Tests.Services
             //Analysis
             _mockCalendarRepository.Verify();
         }
-
-        [Test]
-        public async Task CreateEvent_ShouldCreateNewGuidIfPassedEmptyGuid()
-        {
-            //Data
-            var calendarEventModel = new CalendarEventModel { Id = Guid.Empty };
-
-            //Setup
-            _mockCalendarRepository.Setup(x => x.Add(It.Is<CalendarEvent>(y => y.Id != Guid.Empty)))
-                .Returns(Task.CompletedTask).Verifiable();
-
-            //Test
-            var calendarService = new CalendarService.Services.CalendarService(_mockCalendarRepository.Object);
-            await calendarService.CreateEvent(calendarEventModel);
-
-            //Analysis
-            _mockCalendarRepository.Verify();
-        }
+        
 
         [Test]
         public async Task UpdateEvent_ShouldCallRepositoryUpdate()
         {
             //Data
-            var calendarEventModel = new CalendarEventModel { Id = Guid.NewGuid() };
+            var calendarEventModel = new CalendarEventModel();
 
             //Setup
             _mockCalendarRepository.Setup(x => x.Update(It.IsAny<CalendarEvent>())).Returns(Task.CompletedTask).Verifiable();
@@ -89,11 +72,12 @@ namespace LifeManager.CalendarService.Tests.Services
             var id = Guid.NewGuid();
 
             //Setup
-            _mockCalendarRepository.Setup(x => x.Delete(It.Is<Guid>(y => y == id))).Returns(Task.CompletedTask).Verifiable();
+            _mockCalendarRepository.Setup(x => x.Delete(It.Is<Guid>(y => y == id), It.Is<string>(y => y == "test")))
+                .Returns(Task.CompletedTask).Verifiable();
 
             //Test
             var calendarService = new CalendarService.Services.CalendarService(_mockCalendarRepository.Object);
-            await calendarService.DeleteEvent(id);
+            await calendarService.DeleteEvent(id, "test");
 
             //Analysis
             _mockCalendarRepository.Verify();
@@ -103,7 +87,7 @@ namespace LifeManager.CalendarService.Tests.Services
         public async Task GetEvent_ShouldReturnEvent()
         {
             //Data
-            var calendarEventModel = new CalendarEventModel { Id = Guid.NewGuid() };
+            var calendarEventModel = new CalendarEventModel();
             IEnumerable<CalendarEvent> calendarEvents = new[]
             {
                 new CalendarEvent{ Id = calendarEventModel.Id}
@@ -130,8 +114,8 @@ namespace LifeManager.CalendarService.Tests.Services
             var userId = "test";
             IEnumerable<CalendarEvent> calendarEvents = new[]
             {
-                new CalendarEvent{ Id = Guid.NewGuid()},
-                new CalendarEvent{ Id = Guid.NewGuid()}
+                new CalendarEvent(),
+                new CalendarEvent()
             }.ToList();
 
             //Setup

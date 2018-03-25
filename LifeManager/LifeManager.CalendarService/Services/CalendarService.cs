@@ -20,10 +20,7 @@ namespace LifeManager.CalendarService.Services
 
         public async Task CreateEvent(CalendarEventModel model)
         {
-            if (model.Id == Guid.Empty)
-            {
-                model.Id = Guid.NewGuid();
-            }
+            model.Id = Guid.NewGuid();
             var calendarEvent = Mapper.Map<CalendarEvent>(model);            
             await _repository.Add(calendarEvent);
         }
@@ -34,9 +31,9 @@ namespace LifeManager.CalendarService.Services
             await _repository.Update(calendarEvent);
         }
 
-        public async Task DeleteEvent(Guid id)
+        public async Task DeleteEvent(Guid id, string userId)
         {            
-            await _repository.Delete(id);
+            await _repository.Delete(id, userId);
         }
 
         public async Task<IEnumerable<CalendarEventModel>> GetEvent(CalendarEventModel model)

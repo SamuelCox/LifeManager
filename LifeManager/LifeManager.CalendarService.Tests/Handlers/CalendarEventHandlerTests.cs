@@ -65,10 +65,10 @@ namespace LifeManager.CalendarService.Tests.Handlers
         public async Task HandleDelete_ShouldCallDeleteOnService()
         {
             // Data
-            var deleteCalendarEventCommand = new DeleteCalendarEventCommand { Id = Guid.NewGuid() };
+            var deleteCalendarEventCommand = new DeleteCalendarEventCommand { Id = Guid.NewGuid(), UserId = "test"};
 
             // Setup
-            _mockCalendarService.Setup(x => x.DeleteEvent(It.Is<Guid>(y => y == deleteCalendarEventCommand.Id)))
+            _mockCalendarService.Setup(x => x.DeleteEvent(It.Is<Guid>(y => y == deleteCalendarEventCommand.Id), It.Is<string>(y => y == "test")))
                 .Returns(Task.CompletedTask).Verifiable();
 
             // Test

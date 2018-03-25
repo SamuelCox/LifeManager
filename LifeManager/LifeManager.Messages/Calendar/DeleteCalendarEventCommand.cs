@@ -10,5 +10,6 @@ namespace LifeManager.Messages.Calendar
     public class DeleteCalendarEventCommand : ICommand
     {
         public Guid Id { get; set; }
+        public string UserId { get; set; }
     }
 }

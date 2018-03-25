@@ -33,21 +33,19 @@ namespace LifeManager.Data.Repositories
         {
             var entities = _db.GetCollection<T>(_collectionName);
             var filter = Builders<T>.Filter.Eq(x => x.Id, entity.Id);
+            var userIdFilter = Builders<T>.Filter.Eq(x => x.UserId, entity.UserId);
+            filter = Builders<T>.Filter.And(filter, userIdFilter);
             await entities.UpdateOneAsync(filter, new ObjectUpdateDefinition<T>(entity));
         }
 
-        public virtual async Task Delete(Guid id)
+        public virtual async Task Delete(Guid id, string userId)
         {
             var calendarEvents = _db.GetCollection<T>(_collectionName);
             var filter = Builders<T>.Filter.Eq(x => x.Id, id);
+            var userIdFilter = Builders<T>.Filter.Eq(x => x.UserId, userId);
+            filter = Builders<T>.Filter.And(filter, userIdFilter);
             await calendarEvents.DeleteOneAsync(filter);
-        }
-
-        public virtual async Task<IEnumerable<T>> Get(Guid? id)
-        {
-            var entities = await _db.GetCollection<T>(_collectionName).FindAsync(Builders<T>.Filter.Eq(x => x.Id, id));
-            return entities.ToList();
-        }
+        }        
 
         public async Task<IEnumerable<T>> GetAll(string userId)
         {
@@ -64,7 +62,6 @@ namespace LifeManager.Data.Repositories
             {
                 return true;
             }
-
             return false;
         }
     }

@@ -10,7 +10,7 @@ namespace LifeManager.Data.Repositories
     {
         Task Add(List list);
         Task Update(List list);
-        Task Delete(Guid id);
+        Task Delete(Guid id, string userId);
         Task<IEnumerable<List>> Get(Guid? id, string userId, string name);
         Task<IEnumerable<List>> GetAll(string userId);
     }

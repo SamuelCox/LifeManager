@@ -51,9 +51,8 @@ namespace LifeManager.Rest.Controllers
         [HttpPost("api/Calendar/Delete")]
         public async Task<IActionResult> Delete([FromBody] Guid id)
         {
-            //var user = await _userManagerWrapper.FindByNameAsync(User.Identity.Name);
-            //model.UserId = user.Id;
-            var deleteCalendarEventCommand = new DeleteCalendarEventCommand{ Id = id};
+            var user = await _userManagerWrapper.FindByNameAsync(User.Identity.Name);
+            var deleteCalendarEventCommand = new DeleteCalendarEventCommand{ Id = id, UserId = user.Id};
             await _endpointInstance.Send("LifeManager.Calendar", deleteCalendarEventCommand).ConfigureAwait(false);
             return Ok();
         }

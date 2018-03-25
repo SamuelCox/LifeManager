@@ -10,7 +10,7 @@ namespace LifeManager.CalendarService.Services
     {
         Task CreateEvent(CalendarEventModel model);
         Task UpdateEvent(CalendarEventModel model);
-        Task DeleteEvent(Guid id);
+        Task DeleteEvent(Guid id, string userId);
         Task<IEnumerable<CalendarEventModel>> GetEvent(CalendarEventModel model);
         Task<IEnumerable<CalendarEventModel>> GetAllEvents(string userId);
     }

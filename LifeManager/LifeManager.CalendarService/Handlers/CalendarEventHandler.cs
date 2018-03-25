@@ -35,7 +35,7 @@ namespace LifeManager.CalendarService.Handlers
 
         public async Task Handle(DeleteCalendarEventCommand message, IMessageHandlerContext context)
         {            
-            await _calendarService.DeleteEvent(message.Id);
+            await _calendarService.DeleteEvent(message.Id, message.UserId);
         }
 
         public async Task Handle(GetCalendarEventCommand message, IMessageHandlerContext context)
