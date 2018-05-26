@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using System.Threading.Tasks;
 using LifeManager.CalendarService.Services;
-using LifeManager.Messages;
 using LifeManager.Messages.Calendar;
 using NServiceBus;
 

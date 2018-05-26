@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LifeManager.Messages.Calendar;
 using LifeManager.Models;
 using LifeManager.Rest.Utilities;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
 
 namespace LifeManager.Rest.Controllers
 {
-    
+
     public class CalendarController : Controller
     {
         private readonly IEndpointInstance _endpointInstance;

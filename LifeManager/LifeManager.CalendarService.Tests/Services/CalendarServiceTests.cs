@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using LifeManager.Data.Entities;
 using LifeManager.Data.Repositories;
-using LifeManager.Messages.Calendar;
 using LifeManager.Models;
 using Moq;
 using NUnit.Framework;

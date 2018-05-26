@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +7,12 @@ using LifeManager.Data.Entities;
 using LifeManager.Rest.Models;
 using LifeManager.Rest.Utilities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace LifeManager.Rest.Controllers
-{    
+{
     public class AuthController : Controller
     {
         private readonly IConfiguration _config;

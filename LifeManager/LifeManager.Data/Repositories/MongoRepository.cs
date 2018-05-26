@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using LifeManager.Data.Entities;
 using MongoDB.Driver;
-using Remotion.Linq.Clauses;
 
 namespace LifeManager.Data.Repositories
 {
     public class MongoRepository<T> where T : IMongoEntity
     {
-        private readonly IMongoDatabase _db;
+        protected readonly IMongoDatabase _db;
         private readonly string _collectionName;
 
         public MongoRepository(IMongoDatabase database, string collectionName)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LifeManager.Data.Entities;
 using Moq;
 using NUnit.Framework;
@@ -10,7 +8,6 @@ using LifeManager.Rest.Models;
 using LifeManager.Rest.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace LifeManager.Rest.Tests
 {

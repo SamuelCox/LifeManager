@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using LifeManager.Data.Entities;
 using MongoDB.Driver;
@@ -9,11 +8,9 @@ namespace LifeManager.Data.Repositories
 {
     public class ListRepository : MongoRepository<List>, IListRepository
     {
-        private readonly IMongoDatabase _db;
-
-        public ListRepository(IMongoDatabase database) : base(database, "Lists")
-        {
-            _db = database;
+        
+        public ListRepository(IMongoDatabase database) : base(database, "lists")
+        {            
         }        
 
         public async Task<IEnumerable<List>> Get(Guid? id, string userId, string name)
@@ -33,7 +30,7 @@ namespace LifeManager.Data.Repositories
                 var nameFilter = Builders<List>.Filter.Eq(x => x.Name, name);
                 filter = Builders<List>.Filter.And(filter, nameFilter);
             }
-            var lists = await _db.GetCollection<List>("Lists").FindAsync(filter);
+            var lists = await _db.GetCollection<List>("lists").FindAsync(filter);
             return lists.ToList();
         }                
     }

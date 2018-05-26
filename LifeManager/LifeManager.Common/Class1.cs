@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LifeManager.Common
+﻿namespace LifeManager.Common
 {
     public class Class1
     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using LifeManager.Data.Entities;
 using MongoDB.Driver;
@@ -9,12 +8,10 @@ using MongoDB.Driver;
 namespace LifeManager.Data.Repositories
 {
     public class CalendarRepository : MongoRepository<CalendarEvent>, ICalendarRepository
-    {
-        private readonly IMongoDatabase _db;        
+    {               
 
         public CalendarRepository(IMongoDatabase database) : base(database, "calendarevents")
         {
-            _db = database;
         }        
 
         public async Task<IEnumerable<CalendarEvent>> Get(Guid? id, string userId, string name, string locationName, DateTime? startDate, DateTime? endDate)

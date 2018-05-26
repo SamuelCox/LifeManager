@@ -61,7 +61,7 @@ namespace LifeManager.CalendarService
                 Console.WriteLine(e);
             }
             
-            string input = string.Empty;
+            var input = string.Empty;
 
             
             while (input != "EXIT")

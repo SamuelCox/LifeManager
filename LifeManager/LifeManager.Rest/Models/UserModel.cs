@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LifeManager.Rest.Models
+﻿namespace LifeManager.Rest.Models
 {
     public class UserModel
     {

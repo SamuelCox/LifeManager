@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using LifeManager.CalendarService.Handlers;
 using LifeManager.CalendarService.Services;
-using LifeManager.Data.Entities;
 using LifeManager.Messages.Calendar;
 using LifeManager.Models;
 using Moq;

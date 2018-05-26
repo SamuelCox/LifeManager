@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LifeManager.PeopleService.Tests
+﻿namespace LifeManager.PeopleService.Tests
 {
     public class Class1
     {
