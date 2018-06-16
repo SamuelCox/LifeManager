@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LifeManager.BudgetService.Tests
+﻿namespace LifeManager.BudgetService.Tests
 {
     public class Class1
     {

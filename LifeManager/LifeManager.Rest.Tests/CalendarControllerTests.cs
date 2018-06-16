@@ -170,6 +170,61 @@ namespace LifeManager.Rest.Tests
             _mockUserManagerWrapper.Verify();
             _mockEndpointInstance.Verify();
         }
-        
+
+        [Test]
+        public async Task Delete_ShouldSendToEndpointAndReturnOk()
+        {
+            //Data
+            var guid = Guid.NewGuid();
+
+            //Setup
+            _mockUserManagerWrapper.Setup(x => x.FindByNameAsync(It.IsAny<string>()))
+                .Returns(Task.FromResult(new User { Id = "test" }));
+            _mockEndpointInstance.Setup(x => x.Send(It.Is<DeleteCalendarEventCommand>(y => y.Id == guid), It.IsAny<SendOptions>()))
+                .Returns(Task.CompletedTask).Verifiable();
+            var calendarController = new CalendarController(_mockEndpointInstance.Object, _mockUserManagerWrapper.Object);
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = _httpContext.Object
+            };
+            calendarController.ControllerContext = controllerContext;
+
+            //Test
+            var result = await calendarController.Delete(guid) as OkResult;
+            Assert.NotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+
+            //Analysis            
+            _mockEndpointInstance.Verify();
+        }
+
+        [Test]
+        public async Task Delete_ShouldGetUserNameAndIncludeInMessage()
+        {
+            //Data
+            var guid = Guid.NewGuid();
+
+            //Setup
+            _mockUserManagerWrapper.Setup(x => x.FindByNameAsync(It.IsAny<string>()))
+                .Returns(Task.FromResult(new User { Id = "test" })).Verifiable();
+            _mockEndpointInstance.Setup(x => x.Send(It.Is<DeleteCalendarEventCommand>(y => y.Id == guid && y.UserId == "test"), It.IsAny<SendOptions>()))
+                .Returns(Task.CompletedTask).Verifiable();
+            var calendarController = new CalendarController(_mockEndpointInstance.Object, _mockUserManagerWrapper.Object);
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = _httpContext.Object
+            };
+            calendarController.ControllerContext = controllerContext;
+
+            //Test
+            var result = await calendarController.Delete(guid) as OkResult;
+            Assert.NotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+
+            //Analysis
+            _mockUserManagerWrapper.Verify();
+            _mockEndpointInstance.Verify();
+        }
+
     }
 }
